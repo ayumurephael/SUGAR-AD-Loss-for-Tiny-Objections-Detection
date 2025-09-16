@@ -6,7 +6,6 @@ Chun-chieh Han , 2025 ,BIT
   - VisDrone 2019-DET-train
   - Visdrone 2019-DET-val
   - Visdrone 2019-DET-test-dev
- - MS COCO(2017)
  - AI-TOD
 
 ## Baseline
@@ -22,6 +21,6 @@ YOLOv11 提供了一系列从Nano(N)到Extra Large(X)不同尺寸的模型。由
 
 yolov11-s漏检可能的原因：
 - 目标被环境淹没了(环境噪声、环境与目标太像了) --> Solutions:原图看一次，去掉能去掉的背景-->Zoom in 放大再看一次
-- 
+- 可以先考虑预处理时进行清晰度改善、图像增强
 
 
