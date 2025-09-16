@@ -15,5 +15,13 @@ YOLOv11 提供了一系列从Nano(N)到Extra Large(X)不同尺寸的模型。由
 - yolov11-M (Medium)
 - yolov11-B (Base)
 
+
 基线实验：
+
 量化yolov11-s和yolov11-M/B在**没有任何修改**的情况下，在VisDrone/MS COCO/AI-TOD数据集上的各项检测指标
+
+yolov11-s漏检可能的原因：
+- 目标被环境淹没了(环境噪声、环境与目标太像了) --> Solutions:原图看一次，去掉能去掉的背景-->Zoom in 放大再看一次
+- 
+
+
