@@ -28,6 +28,9 @@ yolov11-s漏检可能的原因：
 - 多感受野聚合卷积模块,Multi-Receptive Field Aggregation,MRFA-->单一感受野检测容易误检，通过MFRA多感受野聚合-->**漏检**(yolo内部改进)
 - 通道与空间注意力模块,Channel and Spatial Attention Block,CASAB-->背景信息冗余度大、小目标容易被背景淹没
 - 离散余弦变换的高频感知模块,High Frequency Perception Moduel,HFP-->图像预处理
+
+提高亮度/清晰度-->处理小目标容易被背景淹没-->YOLO内部改进
+
   - 高频特征提取：使用高通滤波器对输入特征图处理，过滤低频背景成分，保留小目标边缘、纹理等高频细节
   - 双通道注意力增强，突出小目标的特征通道、聚焦小目标所在区域
 - 傅里叶频率特征网络,FreMLP-->提升图像清晰度
