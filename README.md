@@ -1,6 +1,4 @@
 # ICPR2026: 增强无人机航拍视角中的小目标检测性能
-Chun-chieh Han , 2025 ,BIT
-
 ## DataSet
 - Vistrone
   - VisDrone 2019-DET-train
