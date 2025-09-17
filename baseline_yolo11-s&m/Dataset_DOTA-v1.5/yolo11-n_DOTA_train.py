@@ -9,9 +9,8 @@ def on_train_epoch_end(trainer):
     # 总体指标
     print(f"\n--- Epoch {trainer.epoch + 1} Validation Metrics ---")
     print(f"AP (mAP@0.5:0.95): {metrics.box.map:.4f}")
-    print(f"AP50 (mAP50): {metrics.box.map50:.4f}")
-    print(f"AP75 (mAP75): {metrics.box.map75:.4f}")
-    print(f"mAP@0.5:0.95: {metrics.box.map:.4f}")  # 与 AP 相同
+    print(f"AP50 (mAP@0.5): {metrics.box.map50:.4f}")
+    print(f"AP75 (mAP@0.75): {metrics.box.map75:.4f}")  # 修正为 AP@0.75 以匹配常见表述
     
     # 小目标等大小分类的 AP (从 COCOeval.stats 提取，mAP50-95 for small/medium/large)
     try:
@@ -55,7 +54,7 @@ if __name__ == '__main__':
         workers=8,
         optimizer='SGD',
         project='runs/train',
-        name='exp',
+        name='exp-yolov11n-obb',
         save_json=True,  # 保存详细 JSON，用于潜在分析
     )
     
