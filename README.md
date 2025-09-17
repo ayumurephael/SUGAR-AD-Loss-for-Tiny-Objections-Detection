@@ -24,8 +24,9 @@ yolov11-s漏检可能的原因：
 不同尺度物体的检测
 - 幅度感知线性注意力模块,Magnitude-Aware Linear Attention,MALA-->增强对不同目标的局部和全局感知，根据目标的大小和类别动态调整
 - 多感受野聚合卷积模块,Multi-Receptive Field Aggregation,MRFA-->单一感受野检测容易误检，通过MFRA多感受野聚合-->**漏检**(yolo内部改进)
-- 通道与空间注意力模块,Channel and Spatial Attention Block,CASAB-->背景信息冗余度大、小目标容易被背景淹没
+- 通道与空间注意力模块,Channel and Spatial Attention Block,CASAB-->背景信息冗余度大、小目标容易被背景淹没-->在通道维度，使用CASAB抑制低贡献的通道；在空间维度，CASAB聚焦小目标区域，减少复杂背景的干扰
 - 离散余弦变换的高频感知模块,High Frequency Perception Moduel,HFP-->图像预处理
+
 
 提高亮度/清晰度-->处理小目标容易被背景淹没-->YOLO内部改进
 
