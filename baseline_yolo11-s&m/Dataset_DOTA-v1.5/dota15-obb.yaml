@@ -1,0 +1,26 @@
+# dota15-obb.yaml
+# Ultralytics YOLO OBB dataset YAML for DOTA-v1.5
+path: /root/autodl-tmp/DOTA15_yolo_obb  # Adjust this to your actual output path from the conversion script
+task: obb
+
+train: images/train
+val: images/val
+test: images/test  # Optional, for inference
+
+names:
+  0: plane
+  1: ship
+  2: storage tank
+  3: baseball diamond
+  4: tennis court
+  5: basketball court
+  6: ground track field
+  7: harbor
+  8: bridge
+  9: large vehicle
+  10: small vehicle
+  11: helicopter
+  12: roundabout
+  13: soccer ball field
+  14: swimming pool
+  15: container crane
