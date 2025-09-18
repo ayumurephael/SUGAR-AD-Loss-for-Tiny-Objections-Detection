@@ -36,9 +36,9 @@ def on_train_epoch_end(trainer):
 if __name__ == '__main__':
     model = YOLO("yolo11s-obb.pt")  # 载入预训练权重
     
-    # 打印 FLOPs (在训练开始前) - 修正提取逻辑 (info 返回 dict)
-    info = model.info(verbose=True)  # 返回 dict 如 {'params': ..., 'flops': ...}
-    flops = info.get('flops', 0) / 1e9  # 转换为 GFLOPs
+    # 打印 FLOPs (在训练开始前) - 修正提取逻辑 (info 返回 tuple 如 (params, flops))
+    info = model.info(verbose=True)  # 这会打印 params 和 GFLOPs
+    flops = info[1] / 1e9 if isinstance(info, tuple) and len(info) > 1 else 0  # 提取 FLOPs 并转换为 GFLOPs
     print(f"Model FLOPs (GFLOPs): {flops:.2f}")
     
     # 添加自定义回调
@@ -56,7 +56,7 @@ if __name__ == '__main__':
         project='runs/train',
         name='exp-yolo11s-obb',
         save_json=True,  # 保存详细 JSON，用于潜在分析 (但注意数据集前缀问题)
-        patience=50,  # 添加 early stopping 以优化训练
+        # patience=50,  # 添加 early stopping 以优化训练
     )
     
     # 训练后最终验证（修正：设置 save_json=False 以避免 IndexError）
