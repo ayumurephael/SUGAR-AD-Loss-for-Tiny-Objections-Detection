@@ -36,10 +36,10 @@ def on_train_epoch_end(trainer):
 if __name__ == '__main__':
     model = YOLO("yolo11s-obb.pt")  # 载入预训练权重
     
-    # 打印 FLOPs (在训练开始前)
-    info = model.info(verbose=True)  # 这会打印 params 和 GFLOPs
-    flops = info[1] if isinstance(info, tuple) else None  # 假设 info 返回 (params, flops)
-    print(f"Model FLOPs (GFLOPs): {flops:.2f}" if flops else "FLOPs not available")
+    # 打印 FLOPs (在训练开始前) - 修正提取逻辑 (info 返回 dict)
+    info = model.info(verbose=True)  # 返回 dict 如 {'params': ..., 'flops': ...}
+    flops = info.get('flops', 0) / 1e9  # 转换为 GFLOPs
+    print(f"Model FLOPs (GFLOPs): {flops:.2f}")
     
     # 添加自定义回调
     model.add_callback("on_train_epoch_end", on_train_epoch_end)
@@ -49,15 +49,17 @@ if __name__ == '__main__':
         data='/root/autodl-tmp/DOTA15_yolo_obb/dota15-obb.yaml',  # 改为你的 dota15-obb.yaml 路径
         epochs=200,  # 可调整
         imgsz=1024,  # 常见于 DOTA，基于文档建议
-        batch=16,
+        batch=8,
         device=0,
         workers=8,
         optimizer='SGD',
         project='runs/train',
         name='exp-yolo11s-obb',
-        save_json=True,  # 保存详细 JSON，用于潜在分析
+        save_json=True,  # 保存详细 JSON，用于潜在分析 (但注意数据集前缀问题)
+        patience=50,  # 添加 early stopping 以优化训练
     )
     
-    # 训练后最终验证（可选，已在回调中覆盖）
-    metrics = model.val()
+    # 训练后最终验证（修正：设置 save_json=False 以避免 IndexError）
+    metrics = model.val(save_json=False)  # 避免 JSON 解析错误；如果需要 JSON，修复数据集前缀
     print("Final Training Complete. Last validation metrics printed above.")
+    print("Loss plots: Check runs/train/exp-yolo11s-obb/plots/loss.png and results.png")

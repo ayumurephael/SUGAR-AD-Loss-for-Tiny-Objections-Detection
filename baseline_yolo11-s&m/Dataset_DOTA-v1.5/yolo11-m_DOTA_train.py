@@ -49,9 +49,9 @@ if __name__ == '__main__':
         data='/root/autodl-tmp/DOTA15_yolo_obb/dota15-obb.yaml',  # 改为你的 dota15-obb.yaml 路径
         epochs=200,  # 可调整
         imgsz=1024,  # 常见于 DOTA，基于文档建议
-        batch=16,
+        batch=8,
         device=0,
-        workers=8,
+        workers=16,
         optimizer='SGD',
         project='runs/train',
         name='exp-yolov11m-obb',

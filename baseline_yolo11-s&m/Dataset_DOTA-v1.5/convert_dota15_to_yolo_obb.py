@@ -1,3 +1,4 @@
+```python
 # -*- coding: utf-8 -*-
 """
 DOTA-v1.5 -> Ultralytics YOLO OBB converter
@@ -12,7 +13,7 @@ How to use on your server
        --symlink 0
 
 2) Then train with Ultralytics (example):
-   yolo obb train data=/root/autodl-tmp/DOTA15_yolo_obb/dota15-obb.yaml model=yolov10s-obb.pt imgsz=1024 epochs=300
+   yolo obb train data=/root/autodl-tmp/DOTA15_yolo_obb/dota15-obb.yaml model=yolo11s-obb.pt imgsz=1024 epochs=300
 
 Label format produced (Ultralytics YOLO OBB):
 ---------------------------------------------
@@ -21,6 +22,7 @@ Each line in labels/*.txt:
 - coordinates are NORMALIZED to [0,1] by image width/height
 - no confidence score in training labels
 - we keep all objects by default (set --filter-difficult 1 to drop difficult==1)
+- Filenames prefixed with 'split___' (e.g., 'val___P0001.png') for Ultralytics JSON eval compatibility
 
 Class order (from your table, 0-based):
 ---------------------------------------
@@ -29,6 +31,7 @@ Class order (from your table, 0-based):
 10 small vehicle, 11 helicopter, 12 roundabout, 13 soccer ball field,
 14 swimming pool, 15 container crane
 """
+# python convert_dota15_to_yolo_obb.py --base /root/autodl-tmp/DOTA-v1.5 --out /root/autodl-tmp/DOTA15_yolo_obb --filter-difficult 0 --symlink 0
 import os
 import sys
 import glob
@@ -210,10 +213,14 @@ def convert_split(
             items.append((cls_id, poly))
             n_objs += 1
 
-        out_lbl = out_lbl_dir / f"{stem}.txt"
+        # 添加 split___ 前缀到文件名，以支持 Ultralytics JSON eval
+        prefixed_stem = f"{split}___{stem}"
+        out_lbl_name = f"{prefixed_stem}.txt"
+        out_lbl = out_lbl_dir / out_lbl_name
         write_yolo_obb_label(out_lbl, items)
 
-        out_img = out_img_dir / img_path.name
+        out_img_name = f"{prefixed_stem}.png"
+        out_img = out_img_dir / out_img_name
         copy_or_link(img_path, out_img, symlink=symlink)
         n_imgs += 1
 
@@ -230,7 +237,11 @@ def copy_test_images(base: Path, out_root: Path, symlink: bool):
     for g in patterns:
         for p in glob.glob(str(g)):
             src = Path(p)
-            dst = out_img_dir / src.name
+            stem = src.stem
+            # 添加 test___ 前缀到文件名，以支持 Ultralytics JSON eval
+            prefixed_stem = f"test___{stem}"
+            dst_name = f"{prefixed_stem}.png"
+            dst = out_img_dir / dst_name
             copy_or_link(src, dst, symlink=symlink)
             cnt += 1
     return cnt
@@ -284,6 +295,7 @@ def main():
     print(f"Test:  images={tec}")
     print(f"Output root: {out_root}")
     print("Label format: <cls> x1 y1 x2 y2 x3 y3 x4 y4  (normalized)")
+    print("Filenames prefixed with 'split___' for Ultralytics compatibility")
     print("=============================")
 
 if __name__ == "__main__":
