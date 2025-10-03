@@ -4,6 +4,7 @@
   - VisDrone 2019-DET-train
   - Visdrone 2019-DET-val
   - Visdrone 2019-DET-test-dev
+ - COCO2017
  - DOTA-v1.5(OBB)
  - AI-TOD(HBB)
  - UAVDT(HBB)
